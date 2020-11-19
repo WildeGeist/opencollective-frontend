@@ -12,7 +12,8 @@ import ErrorPage from '../components/ErrorPage';
 import OrdersWithData from '../components/expenses/OrdersWithData';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import SectionTitle from '../components/SectionTitle';
+import Link from '../components/Link';
+import { H1, P } from '../components/Text';
 import { withUser } from '../components/UserProvider';
 
 class OrdersPage extends React.Component {
@@ -106,12 +107,19 @@ class OrdersPage extends React.Component {
           </Container>
 
           <div className="content">
-            <SectionTitle
-              title={<FormattedMessage id="Orders" defaultMessage="Orders" />}
-              subtitle={subtitle}
-              action={action}
-            />
-
+            <Container padding="0.8rem 0">
+              <H1 fontSize="4rem" textAlign="center">
+                <FormattedMessage id="Orders" defaultMessage="Orders" />
+              </H1>
+              <P fontSize="1.6rem" textAlign="center" color="#71757a">
+                {subtitle}
+              </P>
+              {action && (
+                <Link color="#090a0a" textAlign="center" route={action.href} className="action" scroll={false}>
+                  {action.label}
+                </Link>
+              )}
+            </Container>
             <div className=" columns">
               <div className="col large">
                 <OrdersWithData collective={collective} LoggedInUser={LoggedInUser} filter={filter} />
