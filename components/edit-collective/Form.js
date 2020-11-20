@@ -16,6 +16,7 @@ import { VAT_OPTIONS } from '../../lib/constants/vat';
 import Container from '../Container';
 import CreateVirtualCardsForm from '../CreateVirtualCardsForm';
 import { Box, Flex } from '../Grid';
+import HostDashboardOrders from '../host-dashboard/HostDashboardOrders';
 import InputField from '../InputField';
 import Link from '../Link';
 import StyledButton from '../StyledButton';
@@ -463,6 +464,9 @@ class EditCollectiveForm extends React.Component {
 
       case EDIT_COLLECTIVE_SECTIONS.RECEIVING_MONEY:
         return <ReceivingMoney collective={collective} />;
+
+      case EDIT_COLLECTIVE_SECTIONS.RECEIVED_ORDERS:
+        return <HostDashboardOrders hostSlug={collective.slug} />;
 
       case EDIT_COLLECTIVE_SECTIONS.SENDING_MONEY:
         return <SendingMoney collective={collective} />;

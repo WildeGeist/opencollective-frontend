@@ -12,7 +12,7 @@ import { addCollectiveCoverData } from '../lib/graphql/queries';
 
 import CollectiveNavbar from '../components/CollectiveNavbar';
 import Container from '../components/Container';
-import { Flex } from '../components/Grid';
+import { Box, Flex } from '../components/Grid';
 import { HOST_SECTIONS } from '../components/host-dashboard/constants';
 import HostDashboardExpenses from '../components/host-dashboard/HostDashboardExpenses';
 import HostDashboardHostedCollectives from '../components/host-dashboard/HostDashboardHostedCollectives';
@@ -198,7 +198,7 @@ class HostDashboardPage extends React.Component {
                 <FormattedMessage id="HostedCollectives" defaultMessage="Hosted Collectives" />
               </MenuLink>
             </Container>
-            <div>{this.renderView(host)}</div>
+            <Box py={['32px', '60px']}>{this.renderView(host)}</Box>
           </React.Fragment>
         )}
       </Page>
