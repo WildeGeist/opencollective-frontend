@@ -10,10 +10,8 @@ import hasFeature, { FEATURES } from '../../../lib/allowed-features';
 import { getTopContributors } from '../../../lib/collective.lib';
 import { CollectiveType } from '../../../lib/constants/collectives';
 import { formatCurrency } from '../../../lib/currency-utils';
-import { getEnvVar } from '../../../lib/env-utils';
 import { GraphQLContext } from '../../../lib/graphql/context';
 import { API_V2_CONTEXT, gqlV2 } from '../../../lib/graphql/helpers';
-import { parseToBoolean } from '../../../lib/utils';
 
 import { Sections } from '../_constants';
 import Container from '../../Container';

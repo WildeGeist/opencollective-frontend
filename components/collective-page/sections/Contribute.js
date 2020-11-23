@@ -9,22 +9,17 @@ import { FormattedMessage } from 'react-intl';
 
 import { CollectiveType } from '../../../lib/constants/collectives';
 import { TierTypes } from '../../../lib/constants/tiers-types';
-import { getEnvVar } from '../../../lib/env-utils';
 import { getErrorFromGraphqlException } from '../../../lib/errors';
 import { isPastEvent } from '../../../lib/events';
 import { API_V2_CONTEXT } from '../../../lib/graphql/helpers';
-import { parseToBoolean } from '../../../lib/utils';
 
 import { Sections } from '../_constants';
 import Container from '../../Container';
 import ContainerOverlay from '../../ContainerOverlay';
 import { CONTRIBUTE_CARD_WIDTH } from '../../contribute-cards/Contribute';
 import ContributeCardContainer, { CONTRIBUTE_CARD_PADDING_X } from '../../contribute-cards/ContributeCardContainer';
-import ContributeCollective from '../../contribute-cards/ContributeCollective';
 import ContributeCustom from '../../contribute-cards/ContributeCustom';
-import ContributeEvent from '../../contribute-cards/ContributeEvent';
 import ContributeTier from '../../contribute-cards/ContributeTier';
-import CreateNew from '../../contribute-cards/CreateNew';
 import { Box, Flex } from '../../Grid';
 import HorizontalScroller from '../../HorizontalScroller';
 import Link from '../../Link';
@@ -218,7 +213,6 @@ class SectionContribute extends React.PureComponent {
   render() {
     const { collective, tiers, events, connectedCollectives, isAdmin } = this.props;
     const { draggingContributionsOrder, isSaving, showTiersAdmin } = this.state;
-    const hasNoContributorForEvents = !events.find(event => event.contributors.length > 0);
     const orderKeys = draggingContributionsOrder || this.getCollectiveContributionCardsOrder();
     const sortedTiers = this.getSortedCollectiveTiers(tiers, orderKeys);
     const isEvent = collective.type === CollectiveType.EVENT;
@@ -232,7 +226,6 @@ class SectionContribute extends React.PureComponent {
     const hasHost = collective.host;
     const isHost = collective.isHost;
     const waysToContribute = this.getFinancialContributions(sortedTiers);
-    const [pastEvents, upcomingEvents] = this.triageEvents(events);
 
     /*
     cases
@@ -339,66 +332,6 @@ class SectionContribute extends React.PureComponent {
                   )}
                 </HorizontalScroller>
               </Box>
-            )}
-            {hasOtherWaysToContribute && !parseToBoolean(getEnvVar('NEW_COLLECTIVE_NAVBAR')) && (
-              <HorizontalScroller getScrollDistance={this.getContributeCardsScrollDistance}>
-                {(ref, Chevrons) => (
-                  <div>
-                    <ContainerSectionContent>
-                      <Flex justifyContent="space-between" alignItems="center" mb={3}>
-                        <H3 fontSize="20px" fontWeight="600" color="black.700">
-                          {connectedCollectives.length > 0 ? (
-                            <FormattedMessage
-                              id="SectionContribute.MoreWays"
-                              defaultMessage="More ways to contribute"
-                            />
-                          ) : (
-                            <FormattedMessage id="Events" defaultMessage="Events" />
-                          )}
-                        </H3>
-                        <Box m={2} flex="0 0 50px">
-                          <Chevrons />
-                        </Box>
-                      </Flex>
-                    </ContainerSectionContent>
-
-                    <ContributeCardsContainer ref={ref}>
-                      {upcomingEvents.map(event => (
-                        <Box key={event.id} px={CONTRIBUTE_CARD_PADDING_X}>
-                          <ContributeEvent
-                            collective={collective}
-                            event={event}
-                            hideContributors={hasNoContributorForEvents}
-                            disableCTA={!collective.isActive || !event.isActive}
-                          />
-                        </Box>
-                      ))}
-                      {connectedCollectives.map(({ id, collective }) => (
-                        <Box key={id} px={CONTRIBUTE_CARD_PADDING_X}>
-                          <ContributeCollective collective={collective} />
-                        </Box>
-                      ))}
-                      {pastEvents.map(event => (
-                        <Box key={event.id} px={CONTRIBUTE_CARD_PADDING_X}>
-                          <ContributeEvent
-                            collective={collective}
-                            event={event}
-                            hideContributors={hasNoContributorForEvents}
-                            disableCTA={!collective.isActive || !event.isActive}
-                          />
-                        </Box>
-                      ))}
-                      {isAdmin && (
-                        <Box px={CONTRIBUTE_CARD_PADDING_X} minHeight={150}>
-                          <CreateNew route={`/${collective.slug}/events/create`} data-cy="create-event">
-                            <FormattedMessage id="event.create.btn" defaultMessage="Create Event" />
-                          </CreateNew>
-                        </Box>
-                      )}
-                    </ContributeCardsContainer>
-                  </div>
-                )}
-              </HorizontalScroller>
             )}
             {!isEvent && (
               <ContainerSectionContent>

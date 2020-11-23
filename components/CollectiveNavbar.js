@@ -45,13 +45,13 @@ const MainContainer = styled.div`
 const MenuLink = styled.a`
   display: block;
   color: #71757a;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 16px;
   text-decoration: none;
   white-space: nowrap;
-  padding: 12px 16px 16px;
+  // padding: 12px 8px 12px;
 
-  letter-spacing: 0.75px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   font-weight: 200;
 
@@ -72,7 +72,6 @@ const MenuLink = styled.a`
 
 const MenuLinkContainer = styled.div`
   cursor: pointer;
-  display: flex;
 
   &::after {
     content: '';
@@ -303,15 +302,19 @@ const CollectiveNavbar = ({
                     }
                   }}
                 >
-                  <Flex flexGrow={1} alignItems="center">
-                    <IconIllustration src={getCollectiveNavbarIcon(section)} />
+                  <Flex py={3} mx={3}>
+                    <Flex flexGrow={1} alignItems="center">
+                      <IconIllustration src={getCollectiveNavbarIcon(section)} />
+                    </Flex>
+                    <Flex flexGrow={1} alignItems="center" ml={2}>
+                      <MenuLink
+                        as={LinkComponent}
+                        collectivePath={collective.path || `/${collective.slug}`}
+                        section={section}
+                        label={i18nCollectivePageSection(intl, section)}
+                      />
+                    </Flex>
                   </Flex>
-                  <MenuLink
-                    as={LinkComponent}
-                    collectivePath={collective.path || `/${collective.slug}`}
-                    section={section}
-                    label={i18nCollectivePageSection(intl, section)}
-                  />
                 </MenuLinkContainer>
               ))}
               {!parseToBoolean(getEnvVar('NEW_COLLECTIVE_NAVBAR')) && (
