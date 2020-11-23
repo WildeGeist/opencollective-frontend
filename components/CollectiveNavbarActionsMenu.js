@@ -9,7 +9,7 @@ import { Receipt } from '@styled-icons/boxicons-regular/Receipt';
 import themeGet from '@styled-system/theme-get';
 import { get, truncate, uniqBy } from 'lodash';
 import { FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { CollectiveType } from '../lib/constants/collectives';
 
@@ -107,6 +107,16 @@ const MenuOutline = styled(Container)`
   }
 `;
 
+const ActionsMenuContainer = styled(Container)`
+  ${props =>
+    props.hideOnMobile &&
+    css`
+      @media (max-width: 52em) {
+        display: none;
+      }
+    `}
+`;
+
 const getCollectivesNeedingAHost = user => {
   const memberships = uniqBy(
     user?.memberOf.filter(m => m.role === 'ADMIN'),
@@ -153,7 +163,7 @@ const CollectiveNavbarActionsMenu = ({
   }
 
   return (
-    <Container display="flex">
+    <ActionsMenuContainer display="flex" hideOnMobile>
       <Flex alignItems="center" onClick={() => toggleShowActionsMenu(!showActionsMenu)}>
         <P my={2} fontSize="16px" textTransform="uppercase" color="blue.700">
           <FormattedMessage id="CollectivePage.NavBar.ActionMenu.Actions" defaultMessage="Actions" />
@@ -282,7 +292,7 @@ const CollectiveNavbarActionsMenu = ({
           </MenuContainer>
         )}
       </Flex>
-    </Container>
+    </ActionsMenuContainer>
   );
 };
 
