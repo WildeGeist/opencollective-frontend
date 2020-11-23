@@ -23,6 +23,12 @@ import LinkCollective from './LinkCollective';
 import LoadingPlaceholder from './LoadingPlaceholder';
 import StyledRoundButton from './StyledRoundButton';
 
+import aboutNavbarIcon from '../public/static/images/collective-navigation/CollectiveNavbarIconAbout.png';
+import budgetNavbarIcon from '../public/static/images/collective-navigation/CollectiveNavbarIconBudget.png';
+import connectNavbarIcon from '../public/static/images/collective-navigation/CollectiveNavbarIconConnect.png';
+import contributeNavbarIcon from '../public/static/images/collective-navigation/CollectiveNavbarIconContribute.png';
+import eventsNavbarIcon from '../public/static/images/collective-navigation/CollectiveNavbarIconEvents.png';
+
 /** Main container for the entire component */
 const MainContainer = styled.div`
   background: white;
@@ -41,10 +47,13 @@ const MenuLink = styled.a`
   color: #71757a;
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: -0.2px;
   text-decoration: none;
   white-space: nowrap;
   padding: 12px 16px 16px;
+
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+  font-weight: 200;
 
   &:focus {
     color: ${themeGet('colors.primary.700')};
@@ -63,6 +72,7 @@ const MenuLink = styled.a`
 
 const MenuLinkContainer = styled.div`
   cursor: pointer;
+  display: flex;
 
   &::after {
     content: '';
@@ -104,6 +114,11 @@ const MenuLinkContainer = styled.div`
       display: none;
     }
   }
+`;
+
+const IconIllustration = styled.img.attrs({ alt: '' })`
+  width: 32px;
+  height: 32px;
 `;
 
 const InfosContainer = styled(Container)`
@@ -180,6 +195,23 @@ const getDefaultCallsToactions = (collective, isAdmin) => {
     hasApply: collective.canApply && !isAdmin,
     hasManageSubscriptions: isAdmin && !isCollective && !isEvent,
   };
+};
+
+const getCollectiveNavbarIcon = section => {
+  switch (section) {
+    case 'about':
+      return aboutNavbarIcon;
+    case 'budget' || 'transactions':
+      return budgetNavbarIcon;
+    case 'connect':
+      return connectNavbarIcon;
+    case 'contribute' || 'contributions':
+      return contributeNavbarIcon;
+    case 'events' || 'projects':
+      return eventsNavbarIcon;
+    default:
+      return contributeNavbarIcon;
+  }
 };
 
 /**
@@ -271,6 +303,9 @@ const CollectiveNavbar = ({
                     }
                   }}
                 >
+                  <Flex flexGrow={1} alignItems="center">
+                    <IconIllustration src={getCollectiveNavbarIcon(section)} />
+                  </Flex>
                   <MenuLink
                     as={LinkComponent}
                     collectivePath={collective.path || `/${collective.slug}`}
